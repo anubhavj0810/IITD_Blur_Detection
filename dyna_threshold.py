@@ -1,3 +1,4 @@
+import math
 
 class cameras(object):
 
@@ -27,24 +28,47 @@ class cameras(object):
             self.threshold[count] = weightage[0]*i
             
     
+def L2normalisation(a):
+    sum_squares = 0
+
+    for i in a:
+        sum_squares+= i*i
+
+    sum_squares = math.sqrt(sum_squares)
     
+    for i in a:
+        a = a/sum_squares
+
+    return a
+   
 c1 = cameras(1,[1,0.3,0.4])#shouldn't overlapping of c1 wrt to c2 and c2 wrt c1 be the same value?
 c2 = cameras(2,[0.4,1,0.5])
 c3 = cameras(3,[0.2,0.6,1])
 
+crowd_density_array = [1000,500,700]
+crowd_density_array = L2normalisation(crowd_density_array)
 
-c1.crowd_density([c2.cid,0.5],False)
-c1.crowd_density([c3.cid,0.3],False)
+c1.crowd_density([c2.cid,crowd_density_array[1]],False)
+c1.crowd_density([c3.cid,crowd_density_array[2]],False)
 
-c2.crowd_density([c1.cid,0.5],False)
-c2.crowd_density([c3.cid,0.3],False)
+c2.crowd_density([c1.cid,crowd_density_array[0]],False)
+c2.crowd_density([c3.cid,crowd_density_array[2]],False)
 
-c3.crowd_density([c1.cid,0.5],False)
-c3.crowd_density([c3.cid,0.3],False)
-
-#normalisation
+c3.crowd_density([c1.cid,crowd_density_array[0]],False)
+c3.crowd_density([c2.cid,crowd_density_array[1]],False)
 
 
+noise_array = [0.01,0.03,0.02]
+noise_array = L2normalisation(noise_array)
+
+c1.noise([c2.cid,noise_array[1]],False)
+c1.noise([c3.cid,noise_array[2]],False)
+
+c2.noise([c1.cid,noise_array[0]],False)
+c2.noise([c3.cid,noise_array[2]],False)
+
+c3.noise([c1.cid,noise_array[0]],False)
+c3.noise([c2.cid,noise_array[1]],False)
 
 
 #x = c1.threshold
