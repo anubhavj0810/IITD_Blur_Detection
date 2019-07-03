@@ -14,7 +14,6 @@ class cameras(object):
         else:
             self.crowd_array.append(cr_de)
 
-
     def noise(self,noise_value,clear):
         if(clear == True):
             self.noises = []
@@ -26,13 +25,26 @@ class cameras(object):
         count = 0
         for i in self.overlapping:
             self.threshold[count] = weightage[0]*i
+            
     
-c1 = cameras(1,[1,0.3,0.4])
+    
+c1 = cameras(1,[1,0.3,0.4])#shouldn't overlapping of c1 wrt to c2 and c2 wrt c1 be the same value?
 c2 = cameras(2,[0.4,1,0.5])
-c3 = cameras(2,[0.2,0.6,1])
+c3 = cameras(3,[0.2,0.6,1])
 
 
 c1.crowd_density([c2.cid,0.5],False)
 c1.crowd_density([c3.cid,0.3],False)
+
+c2.crowd_density([c1.cid,0.5],False)
+c2.crowd_density([c3.cid,0.3],False)
+
+c3.crowd_density([c1.cid,0.5],False)
+c3.crowd_density([c3.cid,0.3],False)
+
+#normalisation
+
+
+
 
 #x = c1.threshold
